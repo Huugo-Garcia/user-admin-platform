@@ -1,0 +1,60 @@
+# Dependencies (se instalarán en el contenedor)
+node_modules/
+npm-debug.log*
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Environment files (IMPORTANT: If you use Docker Compose to pass variables, leave it here)
+# If you need .env in the container, comment out the following line
+.env
+.env.local
+.env.*.local
+
+# Documentation
+README.md
+docs/
+*.md
+
+# Testing
+coverage/
+.nyc_output/
+*.test.js
+*.spec.js
+__tests__/
+test/
+tests/
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+Jenkinsfile
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Docker files (no necessary these inside the container)
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Build artifacts (if you have)
+dist/
+build/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
