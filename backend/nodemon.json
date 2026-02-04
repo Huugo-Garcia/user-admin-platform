@@ -1,5 +1,5 @@
 {
-  "watch": ["*.js", "routes/**/*.js", "models/**/*.js"],
+  "watch": ["src"],
   "ext": "js,json",
   "ignore": ["node_modules/**", "*.test.js"],
   "delay": 1000,
