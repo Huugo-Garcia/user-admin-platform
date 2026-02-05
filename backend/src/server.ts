@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
-import app from './app.js';
-import { closePool } from './config/db.js';
+import app from './app';
+import { disconnectPrisma } from './config/prisma';
 
 dotenv.config();
 
@@ -12,17 +12,17 @@ const server = app.listen(PORT, () => {
 });
 
 // Handle signals
-const gracefulShutdown = async (signal) => {
+const gracefulShutdown = async (signal: string) => {
   console.log(`\n${signal} received. Closing server gracefully...`);
   
   server.close(async () => {
     console.log('HTTP server closed');
     
     try {
-      await closePool();
+      await disconnectPrisma();
       console.log('Graceful shutdown completed');
       process.exit(0);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error during shutdown:', error);
       process.exit(1);
     }

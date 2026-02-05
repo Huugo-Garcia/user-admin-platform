@@ -1,0 +1,74 @@
+# ============================================
+# Stage 1: Dependencies
+# ============================================
+FROM node:20-alpine AS deps
+
+WORKDIR /app
+
+# Copy dependency files
+COPY package.json package-lock.json ./
+
+# Install ALL dependencies (including dev for build)
+RUN npm ci --include=dev
+
+# ============================================
+# Stage 2: Builder
+# ============================================
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copy dependencies from deps stage
+COPY --from=deps /app/node_modules ./node_modules
+
+# Copy source code and config files
+COPY . .
+
+# Generate Prisma Client
+RUN npx prisma generate
+
+# Build TypeScript
+RUN npm run build
+
+# ============================================
+# Stage 3: Runner (Production)
+# ============================================
+FROM node:20-alpine AS runner
+
+WORKDIR /app
+
+# Set production environment
+ENV NODE_ENV=production
+
+# Create non-root user for security
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nodejs
+
+# Copy only production dependencies
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev && npm cache clean --force
+
+# Copy built application from builder
+COPY --from=builder /app/dist ./dist
+
+# Copy Prisma files (needed for migrations and runtime)
+COPY --from=builder /app/prisma ./prisma
+
+# Copy generated Prisma Client
+COPY --from=builder /app/src/generated ./src/generated
+
+# Change ownership to nodejs user
+RUN chown -R nodejs:nodejs /app
+
+# Switch to non-root user
+USER nodejs
+
+# Expose port
+EXPOSE 3001
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:3001/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+
+# Start application
+CMD ["node", "dist/server.js"]

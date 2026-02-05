@@ -1,60 +1,68 @@
-# Dependencies (se instalarán en el contenedor)
-node_modules/
-npm-debug.log*
-
 # Git
-.git/
+.git
 .gitignore
 .gitattributes
 
-# Environment files (IMPORTANT: If you use Docker Compose to pass variables, leave it here)
-# If you need .env in the container, comment out the following line
+# Dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Build artifacts
+dist
+*.tsbuildinfo
+build
+
+# Prisma generated files
+src/generated
+
+# Environment files
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
 
-# Documentation
-README.md
-docs/
-*.md
-
-# Testing
-coverage/
-.nyc_output/
-*.test.js
-*.spec.js
-__tests__/
-test/
-tests/
-
-# CI/CD
-.github/
-.gitlab-ci.yml
-.travis.yml
-Jenkinsfile
-
-# IDEs and Editors
-.vscode/
-.idea/
+# IDE
+.vscode
+.idea
 *.swp
 *.swo
 *~
+
+# OS
 .DS_Store
+Thumbs.db
+desktop.ini
+
+# Documentation
+README.md
+CHANGELOG.md
+*.md
+docs/
+
+# Tests
+**/*.test.ts
+**/*.spec.ts
+**/__tests__
+**/__mocks__
+coverage
+.nyc_output
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.travis.yml
 
 # Logs
-logs/
+logs
 *.log
 
-# Docker files (no necessary these inside the container)
-Dockerfile*
+# Temporary files
+tmp
+temp
+*.tmp
+
+# Docker
+Dockerfile
 docker-compose*.yml
 .dockerignore
-
-# Build artifacts (if you have)
-dist/
-build/
-
-# Temporary files
-*.tmp
-*.temp
-.cache/

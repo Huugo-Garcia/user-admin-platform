@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import healthRoutes from './health.routes.js';
+import { Router, Request, Response } from 'express';
+import healthRoutes from './health.routes';
 
 const router = Router();
 
@@ -7,7 +7,7 @@ const router = Router();
 router.use('/health', healthRoutes);
 
 // Default route
-router.get('/', (req, res) => {
+router.get('/', (req: Request, res: Response) => {
   res.json({
     message: 'User Admin Platform API',
     version: '1.0.0',

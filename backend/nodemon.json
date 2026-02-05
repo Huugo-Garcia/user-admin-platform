@@ -1,11 +1,9 @@
 {
   "watch": ["src"],
-  "ext": "js,json",
-  "ignore": ["node_modules/**", "*.test.js"],
-  "delay": 1000,
+  "ext": "ts,js,json",
+  "ignore": ["node_modules/**", "dist/**", "src/generated/**"],
+  "exec": "tsx src/server.ts",
   "legacyWatch": true,
-  "env": {
-    "NODE_ENV": "development"
-  },
-  "verbose": true
+  "verbose": true,
+  "delay": 1000
 }
